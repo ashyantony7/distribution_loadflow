@@ -1,4 +1,4 @@
-function [T_Bus, T_Branch] = display_results(V, feeder_V, Ibr, branch)
+function [T_Bus, T_Branch] = display_results(V, feeder_V, Ibr, branch, losses)
 %DISPLAY OF RESULTS
 
 %Plot the voltage Profiles at all buses
@@ -15,14 +15,15 @@ function [T_Bus, T_Branch] = display_results(V, feeder_V, Ibr, branch)
     T_Bus.Properties.VariableUnits = {'','V (p.u)','Radians' };
     
     % calculate losses
-    Real_loss = (real(Ibr(:)).^2).*branch(:,4)/1000;
-    Reactive_loss = (imag(Ibr(:)).^2).*branch(:,5)/1000;
+    Real_loss = real(losses)/1000;
+    Reactive_loss = imag(losses)/1000;
     
     % add the Line level results to a table
     fprintf('\n Branch Results');
     T_Branch = table(branch(:,2), branch(:, 3), abs(Ibr(:)), real(Ibr(:).*V(branch(:,2)))/1000, Real_loss, Reactive_loss);
     T_Branch.Properties.VariableNames= {'From_Bus', 'To_Bus','Current', 'Line_Power', 'Real_loss', 'Reactive_loss'};
-    T_Branch.Properties.VariableUnits = {'','','A','W','kW','kVAR'};
+    T_Branch.Properties.VariableUnits = {'','','A','kW','kW','kVAR'};
+    
 end
            
     
