@@ -27,7 +27,7 @@ for i = 1:100
     [V, out_V] = voltages(feeder_V, Ibr, bus, branch);
 
     % termination condition
-    change = mean(abs(V)) - V_old;
+    change = abs(mean(abs(V)) - V_old);
     if change < 10^-6
         break;
     end
